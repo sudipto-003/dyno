@@ -313,3 +313,17 @@ func TestClosures(t *testing.T) {
 
 	testIntegerObject(t, testEval(input), 4)
 }
+
+func TestStringExpression(t *testing.T) {
+	input := `"hello world";`
+
+	evaluated := testEval(input)
+	str, ok := evaluated.(*object.String)
+	if !ok {
+		t.Fatalf("object is not string. got=%T (%+v)", evaluated, evaluated)
+	}
+
+	if str.Value != "hello world" {
+		t.Fatalf("String has wrong value. got=%q", str.Value)
+	}
+}
