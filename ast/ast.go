@@ -271,3 +271,12 @@ func (ce *CallExpression) String() string {
 
 	return out.String()
 }
+
+type StringExpression struct {
+	Token token.Token
+	Value string
+}
+
+func (s *StringExpression) expressionNode()      {}
+func (s *StringExpression) TokenLiteral() string { return s.Token.Literal }
+func (s *StringExpression) String() string       { return s.Token.Literal }
