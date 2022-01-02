@@ -280,3 +280,25 @@ type StringExpression struct {
 func (s *StringExpression) expressionNode()      {}
 func (s *StringExpression) TokenLiteral() string { return s.Token.Literal }
 func (s *StringExpression) String() string       { return s.Token.Literal }
+
+type ArrayLiteral struct {
+	Token    token.Token
+	Elements []Expression
+}
+
+func (al *ArrayLiteral) expressionNode()      {}
+func (al *ArrayLiteral) TokenLiteral() string { return al.Token.Literal }
+func (al *ArrayLiteral) String() string {
+	var out bytes.Buffer
+
+	elemensts := []string{}
+	for _, e := range al.Elements {
+		elemensts = append(elemensts, e.String())
+	}
+
+	out.WriteString("[")
+	out.WriteString(strings.Join(elemensts, ", "))
+	out.WriteString("]")
+
+	return out.String()
+}
