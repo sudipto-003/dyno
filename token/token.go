@@ -31,6 +31,7 @@ const (
 	//delimeters
 	COMA      = ","
 	SEMICOLON = ";"
+	COLON     = ":"
 
 	LPAREN   = "("
 	RPAREN   = ")"
