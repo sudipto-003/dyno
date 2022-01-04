@@ -842,3 +842,34 @@ func TestHashLiteralWithExpression(t *testing.T) {
 		testfunc(value)
 	}
 }
+
+func TestWhileLoopExpression(t *testing.T) {
+	input := "while (x < y) {let x = x + 1}"
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParseErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.body does not contain %d statements. got=%d", 1, len(program.Statements))
+	}
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
+	}
+
+	exp, ok := stmt.Expression.(*ast.WhileLoopExpression)
+	if !ok {
+		t.Fatalf("stmt.Expression is not ast.WhileLoopExpression. got=%T", stmt.Expression)
+	}
+
+	if !testInfixExpression(t, exp.Condition, "x", "<", "y") {
+		return
+	}
+
+	if len(exp.Loop.Statements) != 1 {
+		t.Errorf("Loop is not 1 statements. got=%d", len(exp.Loop.Statements))
+	}
+}

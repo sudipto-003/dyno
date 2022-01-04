@@ -196,7 +196,7 @@ func (ie *IfExpression) String() string {
 	out.WriteString("if")
 	out.WriteString(ie.Condition.String())
 	out.WriteString(" ")
-	out.WriteString(ie.Condition.String())
+	out.WriteString(ie.Consequence.String())
 
 	if ie.Alternative != nil {
 		out.WriteString("else ")
@@ -341,6 +341,25 @@ func (hl *HashLiteral) String() string {
 	out.WriteString("{")
 	out.WriteString(strings.Join(pairs, ", "))
 	out.WriteString("}")
+
+	return out.String()
+}
+
+type WhileLoopExpression struct {
+	Token     token.Token
+	Condition Expression
+	Loop      *BlockStatements
+}
+
+func (wl *WhileLoopExpression) expressionNode()      {}
+func (wl *WhileLoopExpression) TokenLiteral() string { return wl.Token.Literal }
+func (wl *WhileLoopExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("while")
+	out.WriteString(wl.Condition.String())
+	out.WriteString(" ")
+	out.WriteString(wl.Loop.String())
 
 	return out.String()
 }
