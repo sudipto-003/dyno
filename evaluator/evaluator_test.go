@@ -492,3 +492,15 @@ func TestHashIndexExpressions(t *testing.T) {
 		}
 	}
 }
+
+func TestWhileLoopExpression(t *testing.T) {
+	input := `
+	let x = 0;
+	while (x < 5) {
+		let x = x + 1;
+	}
+	x`
+
+	evaluated := testEval(input)
+	testIntegerObject(t, evaluated, int64(5))
+}

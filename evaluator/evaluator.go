@@ -116,6 +116,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 
 	case *ast.HashLiteral:
 		return evalHashLiteral(node, env)
+
+	case *ast.WhileLoopExpression:
+		return evalWhileLoopExpression(node, env)
 	}
 
 	return nil
@@ -276,6 +279,21 @@ func evalIfExpression(ie *ast.IfExpression, env *object.Environment) object.Obje
 	} else {
 		return NULL
 	}
+}
+
+func evalWhileLoopExpression(loop *ast.WhileLoopExpression, env *object.Environment) object.Object {
+	condition := Eval(loop.Condition, env)
+	if isError(condition) {
+		return condition
+	}
+
+	var intermediate object.Object
+	for isTruthy(condition) {
+		intermediate = Eval(loop.Loop, env)
+		condition = Eval(loop.Condition, env)
+	}
+
+	return intermediate
 }
 
 func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object {
